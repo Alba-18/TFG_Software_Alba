@@ -40,16 +40,6 @@ public class Article {
     @ManyToMany(mappedBy = "articles")
     public List<User> users = new ArrayList<>();
 
-    /* 
-    @ManyToMany
-    @JoinTable(
-        name = "article_tag",
-        joinColumns = @JoinColumn(name = "article_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    private Set<SubcategoriaTagRepository> subcategorias = new HashSet<>();
-    */
-
 
     public Article(){
     }
@@ -101,11 +91,7 @@ public class Article {
     public void setCreationDate(LocalDate creationDate) {
         this.CreationDate = creationDate;
     }
-    /* 
-    public Set<SubcategoriaTagRepository> getSubcategorias() {
-        return subcategorias;
-    }
-    */
+    
     public List<User> getUsers() {
         return users;
     }

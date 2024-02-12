@@ -2,8 +2,6 @@ package com.example.TfgSoftAlba.controller;
 import com.example.TfgSoftAlba.models.entity.*;
 import com.example.TfgSoftAlba.models.repository.UserArticleLikeRepository;
 import com.example.TfgSoftAlba.models.service.ArticleService;
-import com.example.TfgSoftAlba.models.service.CategoriaTagService;
-import com.example.TfgSoftAlba.models.service.SubcategoriaTagService;
 import com.example.TfgSoftAlba.models.service.UserService;
 import com.example.TfgSoftAlba.util.CustomUserDetails;
 
@@ -30,12 +28,6 @@ public class ArticleController {
 
     @Autowired
     private UserArticleLikeRepository userArticleRepository;
-
-    /*@Autowired
-    private CategoriaTagService categoriaTagService;*/
-
-    /*@Autowired
-    private SubcategoriaTagService subcategoriaTagService;*/
 
     @ModelAttribute("article")
 	public Article returnNewArticleDTO() {
@@ -135,27 +127,7 @@ public class ArticleController {
         model.addAttribute("Article", new Article());
         return "panel/article/form";
     }
-        /* 
-        //Obtener las categorias de base de datos
-        List<TagsType> categorias = categoriaTagService.ObtenerTodasCategorias();
-        model.addAttribute("Categorias", categorias);
-		model.addAttribute("Article", new Article());
-        */
 
-		
-	
-
-    /*SAVE CON CATEGORIAS 
-    @PostMapping("/article/save")
-	public String save(@ModelAttribute("article") Article article, @RequestParam("img") MultipartFile multipartFile, @RequestParam("subcategorias") List<Long> subcategoriaIds, Model model) throws IOException {
-        article.setCreationDate(new Date());
-        int id=articleService.save(article, multipartFile,subcategoriaIds);
-		if(id==0) {
-			return "panel/article/form";
-		}
-		return "redirect:/article/list";
-	}
-    */
 
     @PostMapping("/article/save")
 	public String save(@ModelAttribute("article") Article article, @RequestParam("img") MultipartFile multipartFile, Model model) throws IOException {
@@ -179,62 +151,4 @@ public class ArticleController {
 		return "redirect:/article/list";
 	}
 
-    /*
-    @GetMapping("/favorites")
-    public String showIndex(Model model) {
-    model.addAttribute("recommendedNews", getRecommendedNews());
-    return "favorites";
-    }
-
-    // Configuración de la conexión a la base de datos
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/db_tfgalba";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "1234";
-
-    // Consulta para obtener las noticias recomendadas
-    private static final String SQL_QUERY = "SELECT ua.article_id, a.s_title, a.image " +
-            "FROM user_article_like ua " +
-            "JOIN article a ON ua.article_id = a.id " +
-            "WHERE ua.Active = 1 " +
-            "GROUP BY ua.article_id ";
-
-    public List<Article> getRecommendedNews() {
-        List<Article> recommendedNews = new ArrayList<>();
-        try {
-            // Establecer la conexión a la base de datos
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            // Crear el objeto Statement para ejecutar la consulta
-            Statement statement = conn.createStatement();
-            // Ejecutar la consulta
-            try (ResultSet resultSet = statement.executeQuery(SQL_QUERY)) {
-                while (resultSet.next()) {
-                    // Obtener los valores de las columnas del resultado
-                    Long articleId = resultSet.getLong("articleid");
-                    String title = resultSet.getString("title");
-                    String image = resultSet.getString("image");
-
-                    // Crear el objeto Article y añadirlo a la lista
-                    Article news = new Article(articleId,title,image);
-                    //news.setTotalLikes(totalLikes);
-                    recommendedNews.add(news);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return recommendedNews;
-    }
-
-    /*public static void main(String[] args) {
-        ArticleController newsController = new ArticleController();
-        List<Article> recommendedNews = newsController.getRecommendedNews();
-
-        // Mostrar las noticias recomendadas
-        for (Article news : recommendedNews) {
-            System.out.println("title: " + news.getTitle());
-            //System.out.println("likes: " + news.getTotalLikes());
-            System.out.println("image: " + news.getImage());
-            System.out.println();
-        }
-    }*/
 }
