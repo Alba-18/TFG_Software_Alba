@@ -1,9 +1,9 @@
 package com.example.TfgSoftAlba.models.service.Impl;
 
 import com.example.TfgSoftAlba.models.entity.Article;
-//import com.example.TfgSoftAlba.models.entity.Tags;
+import com.example.TfgSoftAlba.models.entity.Tag;
 import com.example.TfgSoftAlba.models.repository.ArticleRepository;
-//import com.example.TfgSoftAlba.models.repository.SubcategoriaTagRepository;
+import com.example.TfgSoftAlba.models.repository.TagRepository;
 import com.example.TfgSoftAlba.models.service.ArticleService;
 import com.example.TfgSoftAlba.util.CustomUserDetails;
 import com.example.TfgSoftAlba.util.FileUploadUtil;
@@ -24,8 +24,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ArticleRepository articleRepository;
 
-    /*@Autowired
-    private SubcategoriaTagRepository subcategoriaTagRepository;*/
+    @Autowired
+    private TagRepository tagRepository;
+
 
     @Override
     public List<Article> listAllArticles() {
@@ -42,52 +43,17 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
 
-    /*SAVE CON CATEGORIAS 
     @Override
-	public int save(Article article, MultipartFile multipartFile, List<Long> subcategoriaIds) throws IOException {
-		int res=0;
-		Article newArticle = articleRepository.save(article);
-
-        if (newArticle != null) {
-            res = 1;
-
-             // Lógica para guardar la imagen del artículo
-            String fileName = newArticle.getId().toString();
-             if (!multipartFile.isEmpty()) {
-                FileUploadUtil.saveImage(fileName, multipartFile);
-                newArticle.setImage(fileName);
-            } 
-
-            // Asocia las subcategorías
-            if (subcategoriaIds != null && !subcategoriaIds.isEmpty()) {
-                for (Long subcategoriaId : subcategoriaIds) {
-                    Tags subcategoria = subcategoriaTagRepository.findById(subcategoriaId).orElse(null);
-                    if (subcategoria != null) {
-                        newArticle.getSubcategorias().add(subcategoria);
-                    }
-                }
-            // Actualiza el artículo para reflejar las asociaciones de subcategorías
-            newArticle = articleRepository.save(newArticle);
-        }
-
-        
-        articleRepository.save(newArticle);
-
-        return res;
-        }
-
-    }
-    */
-
-
-    @Override
-	public int save(Article article, MultipartFile multipartFile) throws IOException {
+	public int save(Article article, MultipartFile multipartFile, List<Long>selectedTagIds) throws IOException {
 		int res=0;
 
 		Article newArticle = articleRepository.save(article);
 
         if (newArticle != null) {
             res = 1;
+
+            // Asocia los tags seleccionados con el artículo
+            updateArticleTags(newArticle.getId(), selectedTagIds);
 
              // Lógica para guardar la imagen del artículo
             String fileName = newArticle.getId().toString();
@@ -131,6 +97,14 @@ public class ArticleServiceImpl implements ArticleService {
         //    articleRrepository.save(newArticle); 
 		//}
 	
+
+    private void updateArticleTags(Long articleid, List<Long> selectedTagIds) {
+        Article article = articleRepository.findById(articleid).orElse(null);
+        if (article != null){
+            Set<Tag> tags = new HashSet<>(tagRepository.findAllById(selectedTagIds));
+            article.setTags(tags);
+        }
+    }
 
     @Override
     public Optional<Article> edit(Long id) {

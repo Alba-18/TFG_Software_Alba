@@ -7,15 +7,14 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.sql.Date;
 import java.time.LocalDate;
 
-//import org.json.simple.JSONObject;
-
-//import com.example.TfgSoftAlba.models.repository.SubcategoriaTagRepository;
 
 //import java.util.Date;
 //import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 //import java.util.Set;
+import java.util.Set;
 
 @Entity
 @Table(name= "Article")
@@ -39,6 +38,14 @@ public class Article {
 
     @ManyToMany(mappedBy = "articles")
     public List<User> users = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+        name = "article_tag",
+        joinColumns = @JoinColumn(name = "article_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
 
 
     public Article(){
@@ -113,5 +120,13 @@ public class Article {
 
     public String getTitle() {
         return null;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }    

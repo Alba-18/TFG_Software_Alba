@@ -20,7 +20,7 @@ public interface ArticleService {
 
     //public int save(Article user, MultipartFile multipartFile, List<Long> subcategorias) throws IOException;
 
-    public int save(Article user, MultipartFile multipartFile) throws IOException;
+    public int save(Article user, MultipartFile multipartFile,List<Long> selectedTagIds) throws IOException;
 
     public Optional<Article> edit(Long id);
 

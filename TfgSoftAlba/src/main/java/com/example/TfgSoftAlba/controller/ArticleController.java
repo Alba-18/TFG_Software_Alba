@@ -2,6 +2,7 @@ package com.example.TfgSoftAlba.controller;
 import com.example.TfgSoftAlba.models.entity.*;
 import com.example.TfgSoftAlba.models.repository.UserArticleLikeRepository;
 import com.example.TfgSoftAlba.models.service.ArticleService;
+import com.example.TfgSoftAlba.models.service.TagService;
 import com.example.TfgSoftAlba.models.service.UserService;
 import com.example.TfgSoftAlba.util.CustomUserDetails;
 
@@ -25,6 +26,9 @@ public class ArticleController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TagService tagService;
 
     @Autowired
     private UserArticleLikeRepository userArticleRepository;
@@ -124,14 +128,18 @@ public class ArticleController {
             Rol rol =  roles.iterator().next();
             model.addAttribute("rol", rol.getName());
         }
+
+        List<Tag> tags = tagService.getAllTags();
+        model.addAttribute("tags", tags);
+
         model.addAttribute("Article", new Article());
         return "panel/article/form";
     }
 
 
     @PostMapping("/article/save")
-	public String save(@ModelAttribute("article") Article article, @RequestParam("img") MultipartFile multipartFile, Model model) throws IOException {
-        int id=articleService.save(article, multipartFile);
+	public String save(@ModelAttribute("article") Article article, @RequestParam("img") MultipartFile multipartFile,@RequestParam(value = "selectedTags", required = false) List<Long> selectedTags, Model model) throws IOException {
+        int id=articleService.save(article, multipartFile,selectedTags);
 		if(id==0) {
 			return "panel/article/form";
 		}
