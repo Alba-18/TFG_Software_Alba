@@ -109,6 +109,9 @@ public class ArticleController {
             Rol rol =  roles.iterator().next();
             model.addAttribute("rol", rol.getName());
         }
+        
+        List<Tag> tags = tagService.getAllTags();
+        model.addAttribute("tags", tags);
 
 		model.addAttribute("Article", articleService.edit(id));
 		return "panel/article/form";

@@ -52,4 +52,8 @@ public class Tag {
         this.type = tipo;
     }
 
+    public Tag getParent() {
+        return type;
+    }
+
 }

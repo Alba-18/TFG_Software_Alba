@@ -7,4 +7,5 @@ import com.example.TfgSoftAlba.models.entity.Tag;
 public interface TagService {
 
     public List<Tag> getAllTags();
+    public List<Tag> getCategoriasPadre();
 }

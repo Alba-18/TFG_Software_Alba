@@ -20,6 +20,15 @@
 
                     <div class="tm-noticia-item">
                         <p class="py-4"style="text-align: center;"><strong th:text="${Article.CreationDate}"></strong></p>
+                        <div class="tm-tags">
+                            <p>Tags:</p>
+                            <div class="d-flex flex-wrap">
+                                <div th:each="tag : ${Article.tags}">
+                                    <span th:text="${tag.name}" class="tag-badge mr-1"></span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="tm-noticia-item">

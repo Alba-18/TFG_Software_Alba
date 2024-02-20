@@ -18,6 +18,16 @@ p { line-height: 1.8;
     width: 100%;
 }
 
+.tag-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    background-color: #4472C4;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
 a { 
     text-decoration: none;
     transition: all 0.3s ease; 
@@ -59,7 +69,50 @@ input{font-family: fantasy}
 /*------------------------------------------*/
 
 /*------------------------------------------*/
+/*CATEGORIAS*/
+.container-fluid {
+    margin-top: 3px;
+}
+
+.categories-bar {
+    position: fixed;
+    top: 60px; /* Altura de la barra de navegación */
+    width: 100%;
+    z-index: 999; /* Z-index inferior a la barra de navegación */
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col {
+    flex: 1 0 0;
+}
+
+.btn-group {
+    display: flex;
+}
+
+.btn-secondary {
+    margin-right: 10px;
+    border-radius: 0;
+}
+
+.btn-group > .btn {
+    flex-grow: 1;
+}
+
+/*------------------------------------------*/
 /*ESTILO DE NAVBAR*/
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+
 .navbar-brand {
     color: black;
     font-size: 30px;
