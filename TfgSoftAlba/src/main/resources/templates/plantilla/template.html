@@ -37,27 +37,6 @@
             </div>
         </nav>
 
-        <div class="container-fluid mt-3 categories-bar">
-            <div class="row">
-                <div class="col">
-                    <div class="btn-group" role="group" aria-label="Categorías">
-                        <!-- Iterar sobre las categorías padres--> 
-                        <div th:each="categoria : ${categoriasPadre}" class="btn-group" role="group">
-                            <button id="dropdownMenu${categoria.id}" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${categoria.nombre}">
-                                <!-- Mostrar el nombre de la categoría padre--> 
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu${categoria.id}">
-                                <!-- Iterar sobre las subcategorías de la categoría padre--> 
-                                <div th:each="subcategoria : ${categoria.subcategorias}" class="dropdown-item" href="#" th:text="${subcategoria.nombre}">
-                                    <!-- Mostrar el nombre de la subcategoría--> 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </header>
     <!--CONTENIDO-->
 
@@ -80,49 +59,4 @@
 
 
 
-<!--
-<div class="container-fluid mt-3 categories-bar">
-    <div class="row">
-        <div class="col">
-            <div class="btn-group" role="group" aria-label="Categorías">
-                <!-- Botón para la categoría 1 con menú desplegable
-                <div class="btn-group" role="group">
-                    <button id="dropdownMenu1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Categoría 1
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <!-- Subcategorías de la categoría 1 
-                        <a class="dropdown-item" href="#">Subcategoría 1.1</a>
-                        <a class="dropdown-item" href="#">Subcategoría 1.2</a>
-                        <!-- Agrega más subcategorías según sea necesario
-                    </div>
-                </div>
-                <!-- Botón para la categoría 2 con menú desplegable
-                <div class="btn-group" role="group">
-                    <button id="dropdownMenu2" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Categoría 2
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <!-- Subcategorías de la categoría 2
-                        <a class="dropdown-item" href="#">Subcategoría 2.1</a>
-                        <a class="dropdown-item" href="#">Subcategoría 2.2</a>
-                        <!-- Agrega más subcategorías según sea necesario
-                    </div>
-                </div>
-                <!-- Botón para la categoría 3 con menú desplegable
-                <div class="btn-group" role="group">
-                    <button id="dropdownMenu3" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Categoría 3
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
-                        <!-- Subcategorías de la categoría 3
-                        <a class="dropdown-item" href="#">Subcategoría 3.1</a>
-                        <a class="dropdown-item" href="#">Subcategoría 3.2</a>
-                        <!-- Agrega más subcategorías según sea necesario 
-                    </div>
-                </div>
-                <!-- Agrega más botones de categorías según sea necesario 
-            </div>
-        </div>
-    </div>
-</div>-->
+

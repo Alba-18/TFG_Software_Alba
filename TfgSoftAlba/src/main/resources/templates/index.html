@@ -1,10 +1,76 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="plantilla/template :: head">
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $('.dropdown-item').on('click', function() {
+                event.preventDefault();
+                var selectedDate = $(this).data('date');
+                console.log("Selected date:", selectedDate);
+                $.ajax({
+                    type: 'GET',
+                    url: '/filterByDate/' + selectedDate,
+                    success: function(data) {
+                        // Oculta todos los artículos
+                        $('.article').hide();
+                        $('#articles-container').html(data).find('.article').show();
+                    },
+                    error: function() {
+                        alert('Error al filtrar los artículos por fecha.');
+                    }
+                });
+            });
+        });
+    </script>
 </head>
     <body>
         <header th:replace="plantilla/template :: header"></header> 
 
+        <div class="container-fluid mt-3 categories-bar">
+            <div class="row">
+                <div class="col">
+                    <div class="btn-group" role="group" aria-label="Categorías">
+                        <!-- Botón para la categoría 1 con menú desplegable-->
+                        <div class="btn-group" role="group">
+                            <button id="dropdownMenu1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                TIPOLOGÍA
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <!-- Subcategorías de la categoría 1 -->
+                                <a class="dropdown-item" href="#">Subcategoría 1.1</a>
+                                <a class="dropdown-item" href="#">Subcategoría 1.2</a>
+                                <!-- Agrega más subcategorías según sea necesario-->
+                            </div>
+                        </div>
+                        <!-- Botón para la categoría 2 con menú desplegable-->
+                        <div class="btn-group" role="group">
+                            <button id="dropdownMenu2" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                LOCALIZACIÓN
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <!-- Subcategorías de la categoría 2-->
+                                <a class="dropdown-item" href="#">Subcategoría 2.1</a>
+                                <a class="dropdown-item" href="#">Subcategoría 2.2</a>
+                                <!-- Agrega más subcategorías según sea necesario-->
+                            </div>
+                        </div>
+                        <!-- Botón para la categoría 3 con menú desplegable-->
+                        <div class="btn-group" role="group">
+                            <button id="dropdownMenu3" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                FECHA
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+                                <div th:each="fecha : ${fechasCreacion}">
+                                    <!-- Extrae el mes y el año de la fecha de creación -->
+                                    <a href="#" class="dropdown-item" th:text="${fecha}" th:attr="data-date=${fecha}"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Agrega más botones de categorías según sea necesario -->
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <div class="container pt-5" >
             <div class="row d-flex pt-4 px-5" >
@@ -18,6 +84,10 @@
                             </div>
                         </div>
                     </div>
+            </div>
+
+            <div id="articles-container">
+                <!-- Aquí se mostrarán los artículos filtrados -->
             </div>
 
             <nav aria-label="Page navigation example">

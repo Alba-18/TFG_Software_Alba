@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -138,6 +139,15 @@ public class ArticleServiceImpl implements ArticleService {
         Page<Article> page = new PageImpl<>(content, pageable, totalElements);
         
         return page;
+    }
+
+    public List<Article> findByCreationDate(String selectedMonthYear) {
+        // Convertir la cadena selectedMonthYear a LocalDate
+        LocalDate startDate = LocalDate.parse(selectedMonthYear + "-01", DateTimeFormatter.ofPattern("MM/yyyy-dd"));
+        LocalDate endDate = startDate.plusMonths(1).minusDays(1); // Obtener el último día del mes
+
+        // Consultar los artículos en el rango de fechas correspondiente al mes y año proporcionados
+        return articleRepository.findByCreationDateBetween(startDate, endDate);
     }
 
 }

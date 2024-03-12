@@ -34,7 +34,7 @@ public class Article {
 
     @CreationTimestamp
     @Column(name = "dt_creationdate")
-    private LocalDate CreationDate;
+    private LocalDate creationDate;
 
     @ManyToMany(mappedBy = "articles")
     public List<User> users = new ArrayList<>();
@@ -92,11 +92,11 @@ public class Article {
     }
 
     public LocalDate getCreationDate() {
-        return CreationDate;
+        return creationDate;
     }
 
     public void setCreationDate(LocalDate creationDate) {
-        this.CreationDate = creationDate;
+        this.creationDate = creationDate;
     }
     
     public List<User> getUsers() {

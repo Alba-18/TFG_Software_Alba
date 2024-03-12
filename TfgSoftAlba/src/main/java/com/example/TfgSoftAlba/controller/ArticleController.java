@@ -1,5 +1,6 @@
 package com.example.TfgSoftAlba.controller;
 import com.example.TfgSoftAlba.models.entity.*;
+import com.example.TfgSoftAlba.models.repository.ArticleRepository;
 import com.example.TfgSoftAlba.models.repository.UserArticleLikeRepository;
 import com.example.TfgSoftAlba.models.service.ArticleService;
 import com.example.TfgSoftAlba.models.service.TagService;
@@ -7,7 +8,9 @@ import com.example.TfgSoftAlba.models.service.UserService;
 import com.example.TfgSoftAlba.util.CustomUserDetails;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,6 +26,9 @@ public class ArticleController {
     
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private ArticleRepository articleRepository;
 
     @Autowired
     private UserService userService;
@@ -161,5 +167,7 @@ public class ArticleController {
         }
 		return "redirect:/article/list";
 	}
+
+    
 
 }
