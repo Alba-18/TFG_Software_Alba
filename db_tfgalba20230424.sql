@@ -154,9 +154,9 @@ UNLOCK TABLES;
 -- Table structure for table `TagType`
 --
 
-DROP TABLE IF EXISTS `tags_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*DROP TABLE IF EXISTS `tags_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 ;
 CREATE TABLE `tags_type` (
   `tags_type_id` bigint NOT NULL AUTO_INCREMENT,
   `description` varchar(500) NOT NULL,
@@ -169,11 +169,11 @@ CREATE TABLE `tags_type` (
 -- Dumping data for table `tags_type`
 --
 
-LOCK TABLES `tags_type` WRITE;
-/*!40000 ALTER TABLE `tags_type` DISABLE KEYS */;
+/*LOCK TABLES `tags_type` WRITE;
+/*!40000 ALTER TABLE `tags_type` DISABLE KEYS ;
 INSERT INTO `tags_type` VALUES (1,'Tipo'),(2,'Sede');
-/*!40000 ALTER TABLE `tags_type` ENABLE KEYS */;
-UNLOCK TABLES;
+/*!40000 ALTER TABLE `tags_type` ENABLE KEYS ;
+UNLOCK TABLES;*/
 
 
 --
@@ -185,10 +185,11 @@ DROP TABLE IF EXISTS `tags`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tags` (
   `tag_id` bigint NOT NULL AUTO_INCREMENT,
-  `tags_type_id` bigint NOT NULL,
   `name` varchar(500) NOT NULL,
-  PRIMARY KEY (`tag_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `tags_type_id` bigint,
+  PRIMARY KEY (`tag_id`),
+  FOREIGN KEY (`tags_type_id`) REFERENCES `tags`(`tag_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -198,7 +199,14 @@ CREATE TABLE `tags` (
 
 LOCK TABLES `tags` WRITE;
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
-INSERT INTO `tags` VALUES (1,1,'Banca'),(2,1,'Seguros'),(3,1,'Deportes'),(4,1,'Eventos'),(5,1,'Ofertas'),(6,3,'Madrid'),(7,3,'Sevilla'),(8,3,'Valencia'),(9,3,'Nacional');
+INSERT INTO `tags` VALUES 
+(1,'Deportes',NULL),
+(2,'Localizacion',NULL),
+(3,'Futbol',1),
+(4,'Baloncesto',1),
+(5,'Madrid',2),
+(6,'Sevilla',2),
+(7,'Valencia',2);
 /*!40000 ALTER TABLE `tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
