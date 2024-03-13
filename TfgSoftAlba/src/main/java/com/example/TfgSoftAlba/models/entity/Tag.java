@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name= "tags")
+@Table(name= "db_tfgalba.tags")
 public class Tag {
     
     @Id

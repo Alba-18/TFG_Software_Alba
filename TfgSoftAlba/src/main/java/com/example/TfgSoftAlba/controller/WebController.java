@@ -4,7 +4,9 @@ import com.example.TfgSoftAlba.models.entity.Article;
 import com.example.TfgSoftAlba.models.entity.Rol;
 import com.example.TfgSoftAlba.models.entity.User;
 import com.example.TfgSoftAlba.models.repository.ArticleRepository;
+import com.example.TfgSoftAlba.models.repository.TagRepository;
 import com.example.TfgSoftAlba.models.service.ArticleService;
+import com.example.TfgSoftAlba.models.service.TagService;
 import com.example.TfgSoftAlba.models.service.UserArticleLikeService;
 import com.example.TfgSoftAlba.models.service.UserService;
 import com.example.TfgSoftAlba.util.CustomUserDetails;
@@ -33,6 +35,9 @@ public class WebController {
     private ArticleService articleService;
 
     @Autowired
+    private TagService tagService;
+
+    @Autowired
     private UserService userService;
 
     private ArticleRepository articleRepository;
@@ -45,6 +50,7 @@ public class WebController {
 
         return findPaginated(1, model);  
     }
+
 
     @GetMapping("/page/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
@@ -65,6 +71,9 @@ public class WebController {
                                                        .map(date -> date.format(DateTimeFormatter.ofPattern("MM/yyyy")))
                                                        .distinct()
                                                        .collect(Collectors.toList()));
+
+        model.addAttribute("FiltroLocalizacion", tagService.TypeLocalizacion());
+        model.addAttribute("FiltroTipos", tagService.TypeTipo());
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object principal =  auth.getPrincipal();

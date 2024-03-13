@@ -44,4 +44,14 @@ public class TagServiceImpl implements TagService {
         return parentsTags;
     }
     
+    @Override
+    public List<String> TypeLocalizacion() {
+        List<String> localizacionName = tagRepository.findByTypeLocalizacion();
+        return localizacionName;
+    }
+
+    @Override
+    public List<String> TypeTipo() {
+        return tagRepository.findByTypeTipo();
+    }
 }

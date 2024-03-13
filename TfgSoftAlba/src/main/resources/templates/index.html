@@ -35,11 +35,10 @@
                             <button id="dropdownMenu1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 TIPOLOGÍA
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <!-- Subcategorías de la categoría 1 -->
-                                <a class="dropdown-item" href="#">Subcategoría 1.1</a>
-                                <a class="dropdown-item" href="#">Subcategoría 1.2</a>
-                                <!-- Agrega más subcategorías según sea necesario-->
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <div th:each="name : ${FiltroTipos}">
+                                    <a href="#" class="dropdown-item" th:text="${name}"></a>
+                                </div>
                             </div>
                         </div>
                         <!-- Botón para la categoría 2 con menú desplegable-->
@@ -48,10 +47,9 @@
                                 LOCALIZACIÓN
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <!-- Subcategorías de la categoría 2-->
-                                <a class="dropdown-item" href="#">Subcategoría 2.1</a>
-                                <a class="dropdown-item" href="#">Subcategoría 2.2</a>
-                                <!-- Agrega más subcategorías según sea necesario-->
+                                <div th:each="name : ${FiltroLocalizacion}">
+                                    <a href="#" class="dropdown-item" th:text="${name}"></a>
+                                </div>
                             </div>
                         </div>
                         <!-- Botón para la categoría 3 con menú desplegable-->

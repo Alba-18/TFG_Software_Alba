@@ -8,4 +8,7 @@ public interface TagService {
 
     public List<Tag> getAllTags();
     public List<Tag> getCategoriasPadre();
+
+    public List<String> TypeLocalizacion();
+    public List<String> TypeTipo();
 }
