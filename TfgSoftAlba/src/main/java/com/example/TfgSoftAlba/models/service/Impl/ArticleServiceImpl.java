@@ -69,34 +69,6 @@ public class ArticleServiceImpl implements ArticleService {
 
         return res;
     }
-
-    /* 
-    public int save(Article article, MultipartFile multipartFile, List<Long> subcategorias) throws IOException {
-        int res=0;
-        Article newArticle = articleRrepository.save(article);
-        if(!newArticle.equals(null)) {
-            res=1; 
-            String fileName = newArticle.getId().toString();
-
-            if(!multipartFile.isEmpty()){
-                FileUploadUtil.saveImage(fileName, multipartFile);
-            }            
-            newArticle.setImage(fileName);
-            articleRrepository.save(newArticle); 
-        }
-        return res;
-    }  */  
-
-		//if(!newArticle.equals(null)) {
-		//	res=1; 
-        //    String fileName = newArticle.getId().toString();
-
-        //    if(!multipartFile.isEmpty()){
-        //        FileUploadUtil.saveImage(fileName, multipartFile);
-        //    }            
-        //    newArticle.setImage(fileName);
-        //    articleRrepository.save(newArticle); 
-		//}
 	
 
     private void updateArticleTags(Long articleid, List<Long> selectedTagIds) {
@@ -148,6 +120,15 @@ public class ArticleServiceImpl implements ArticleService {
 
         // Consultar los artículos en el rango de fechas correspondiente al mes y año proporcionados
         return articleRepository.findByCreationDateBetween(startDate, endDate);
+    }
+
+    // Método para filtrar artículos
+    public List<Article> filterArticles(String selectedDate, String selectedLocation, String selectedType) {
+        
+        // Supongamos que tienes métodos en el repository para filtrar por fecha, localización y tipo
+        List<Article> filteredArticles = articleRepository.findByCreationDateAndLocationAndType(selectedDate, selectedLocation, selectedType);
+
+        return filteredArticles;
     }
 
 }

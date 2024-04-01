@@ -1,27 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="plantilla/template :: head">
-    <script th:inline="javascript">
-        $(document).ready(function() {
-            $('.dropdown-item').on('click', function() {
-                event.preventDefault();
-                var selectedDate = $(this).data('date');
-                console.log("Selected date:", selectedDate);
-                $.ajax({
-                    type: 'GET',
-                    url: '/filterByDate/' + selectedDate,
-                    success: function(data) {
-                        // Oculta todos los artículos
-                        $('.article').hide();
-                        $('#articles-container').html(data).find('.article').show();
-                    },
-                    error: function() {
-                        alert('Error al filtrar los artículos por fecha.');
-                    }
-                });
-            });
-        });
-    </script>
 </head>
     <body>
         <header th:replace="plantilla/template :: header"></header> 
@@ -31,40 +10,60 @@
                 <div class="col">
                     <div class="btn-group" role="group" aria-label="Categorías">
                         <!-- Botón para la categoría 1 con menú desplegable-->
-                        <div class="btn-group" role="group">
-                            <button id="dropdownMenu1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group" role="group">
+                            <label for="categoria">TIPOLOGIA</label>
+                            <select id="categoria" name="categoria">
+                                <option value="">Todas</option>
+                                <option th:each="name : ${FiltroTipos}" th:value="${name}" th:text="${name}"></option>
+                            </select>
+                            <!--<button id="dropdownMenu1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 TIPOLOGÍA
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                 <div th:each="name : ${FiltroTipos}">
                                     <a href="#" class="dropdown-item" th:text="${name}"></a>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                         <!-- Botón para la categoría 2 con menú desplegable-->
-                        <div class="btn-group" role="group">
-                            <button id="dropdownMenu2" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group" role="group">
+                            <label for="localizacion">LOCALIZACION</label>
+                            <select id="localizacion" name="localizacion">
+                                <option value="">Todas</option>
+                                <option th:each="name : ${FiltroLocalizacion}" th:value="${name}" th:text="${name}"></option>
+                            </select>
+                            <!--<button id="dropdownMenu2" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 LOCALIZACIÓN
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                 <div th:each="name : ${FiltroLocalizacion}">
                                     <a href="#" class="dropdown-item" th:text="${name}"></a>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                         <!-- Botón para la categoría 3 con menú desplegable-->
-                        <div class="btn-group" role="group">
-                            <button id="dropdownMenu3" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group" role="group">
+                            <label for="fecha">FECHA</label>
+                            <div class="input-group date">
+                                <select id="fecha" name="fecha" class="form-control">
+                                    <option value="">Seleccionar fecha</option>
+                                    <!-- Iterar sobre las fechas de creación y construir las opciones del selector -->
+                                    <option th:each="fecha : ${fechasCreacion}" th:text="${fecha}"></option>
+                                </select>
+                            </div> 
+                            <!--<button id="dropdownMenu3" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 FECHA
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
                                 <div th:each="fecha : ${fechasCreacion}">
-                                    <!-- Extrae el mes y el año de la fecha de creación -->
+                                    Extrae el mes y el año de la fecha de creación
                                     <a href="#" class="dropdown-item" th:text="${fecha}" th:attr="data-date=${fecha}"></a>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                         <!-- Agrega más botones de categorías según sea necesario -->
+                        <!-- Agregar un botón para enviar la solicitud de filtrado -->
+                        <button  th:if="${rol == 'ADMIN' or rol == 'USER'}" id="filtrar-btn" class="btn btn-primary">Filtrar</button>
                     </div>
                 </div>
             </div>
@@ -82,10 +81,6 @@
                             </div>
                         </div>
                     </div>
-            </div>
-
-            <div id="articles-container">
-                <!-- Aquí se mostrarán los artículos filtrados -->
             </div>
 
             <nav aria-label="Page navigation example">
@@ -115,5 +110,36 @@
         </div>
         
         <footer th:replace="plantilla/template :: footer"></footer>
+
+        <!-- Agregar los scripts necesarios para el DatePicker -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script th:inline="javascript">
+            $(document).ready(function() {
+                // Agregar una función para manejar el clic en el botón de filtrar
+                $('#filtrar-btn').click(function() {
+                    var selectedCategoria = $('#categoria').val();
+                    var selectedLocalizacion = $('#localizacion').val();
+                    var selectedFecha = $('#fecha').val();
+
+                    // Enviar los valores seleccionados al backend
+                    $.ajax({
+                        type: "GET",
+                        url: "/filter",
+                        data: {
+                            categoria: selectedCategoria,
+                            localizacion: selectedLocalizacion,
+                            fecha: selectedFecha
+                        },
+                        success: function(response) {
+                            // Manejar la respuesta del backend, por ejemplo, actualizar la lista de artículos
+                        },
+                        error: function(xhr, status, error) {
+                            // Manejar errores si es necesario
+                        }
+                    });
+                });
+            });
+        </script>
+
     </body>
 </html>

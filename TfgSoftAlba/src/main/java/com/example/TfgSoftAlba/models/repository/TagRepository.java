@@ -12,9 +12,9 @@ import com.example.TfgSoftAlba.models.entity.Tag;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long>{
 
-    @Query(value ="Select distinct t.name from db_tfgalba.tags t where t.tags_type_id = 2",nativeQuery=true)
+    @Query(value ="Select distinct t.name from tags t where t.tags_type_id = 2",nativeQuery=true)
     public abstract List<String> findByTypeLocalizacion();
 
-    @Query(value ="Select distinct t.name from db_tfgalba.tags t where t.tags_type_id = 1",nativeQuery=true)
+    @Query(value ="Select distinct t.name from tags t where t.tags_type_id = 1",nativeQuery=true)
     public abstract List<String> findByTypeTipo();
 }

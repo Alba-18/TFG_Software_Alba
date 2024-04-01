@@ -70,13 +70,15 @@ input{font-family: fantasy}
 
 /*------------------------------------------*/
 /*CATEGORIAS*/
-.container-fluid {
-    margin-top: 3px;
+
+.container {
+    display:block;
+    margin-top: 40px;
 }
 
 .categories-bar {
     position: fixed;
-    top: 60px; /* Altura de la barra de navegación */
+    top: 70px; /* Altura de la barra de navegación */
     width: 100%;
     z-index: 999; /* Z-index inferior a la barra de navegación */
 }

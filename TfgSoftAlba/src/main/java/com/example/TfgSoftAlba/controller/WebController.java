@@ -53,18 +53,30 @@ public class WebController {
 
 
     @GetMapping("/page/{pageNo}")
-    public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo, @RequestParam(value = "selectedDate", required = false) String selectedDate,
+                                @RequestParam(value = "selectedLocation", required = false) String selectedLocation,
+                                @RequestParam(value = "selectedType", required = false) String selectedType,
+                                Model model) {
         int pageSize = 6;
 
-        Page<Article> page = articleService.findPaginated(pageNo, pageSize);
-        List<Article> listArticles = page.getContent();
+        // Filtrar artículos si se proporcionan los parámetros de filtro
+        List<Article> filteredArticles = null;
+        if (selectedDate != null || selectedLocation != null || selectedType != null) {
+            filteredArticles = articleService.filterArticles(selectedDate, selectedLocation, selectedType);
+        }
 
-        model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("Articles", listArticles);
+        // Si no se proporcionan parámetros de filtro o si la lista filtrada está vacía, obtener artículos paginados
+        if (filteredArticles == null || filteredArticles.isEmpty()) {
+            Page<Article> page = articleService.findPaginated(pageNo, pageSize);
+            filteredArticles = page.getContent();
 
-        model.addAttribute("fechasCreacion", listArticles.stream()
+            model.addAttribute("currentPage", pageNo);
+            model.addAttribute("totalPages", page.getTotalPages());
+            model.addAttribute("totalItems", page.getTotalElements());
+        }    
+        model.addAttribute("Articles", filteredArticles);
+
+        model.addAttribute("fechasCreacion", filteredArticles.stream()
                                                        .map(Article::getCreationDate)
                                                        .filter(Objects::nonNull)
                                                        .map(date -> date.withDayOfMonth(1))
@@ -89,6 +101,26 @@ public class WebController {
 
         return "index";
     }
+
+
+    /*@GetMapping("/filter")
+    public String filterArticles(@RequestParam(value = "selectedDate", required = false) String selectedDate,
+                             @RequestParam(value = "selectedLocation", required = false) String selectedLocation,
+                             @RequestParam(value = "selectedType", required = false) String selectedType,
+                             Model model) {
+
+    // Filtrar artículos por fecha, localización y/o tipología según corresponda
+    List<Article> filteredArticles = articleService.filterArticles(selectedDate, selectedLocation, selectedType);
+
+    // Agregar los artículos filtrados al modelo
+    model.addAttribute("Articles", filteredArticles);
+
+    // Añadir los demás atributos al modelo (currentPage, totalPages, fechasCreacion, FiltroLocalizacion, FiltroTipos, rol)
+
+    return "index"; // O el nombre de la vista donde deseas mostrar los artículos filtrados
+    }*/
+
+
 
     @GetMapping("/favorites")
     public String showLikedNews(Model model, Authentication authentication){

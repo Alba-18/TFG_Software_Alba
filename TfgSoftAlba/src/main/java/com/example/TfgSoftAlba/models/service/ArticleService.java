@@ -19,7 +19,6 @@ public interface ArticleService {
 
     public ArrayList<Article> getArticlesByIds(ArrayList<Long> ArticleIds);
 
-
     public int save(Article user, MultipartFile multipartFile,List<Long> selectedTagIds) throws IOException;
 
     public Optional<Article> edit(Long id);
@@ -29,6 +28,8 @@ public interface ArticleService {
     public List<Article> findByCreationDate(String selectedMonthYear);
 
     Page<Article> findPaginated(int pageNo, int pageSize);
+
+    public List<Article> filterArticles(String selectedDate, String selectedLocation, String selectedType);
 
 
 }
