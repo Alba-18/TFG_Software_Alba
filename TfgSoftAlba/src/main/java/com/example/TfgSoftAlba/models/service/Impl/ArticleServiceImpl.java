@@ -123,7 +123,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     // Método para filtrar artículos
-    public List<Article> filterArticles(String selectedDate, String selectedLocation, String selectedType) {
+    public List<Article> findByCreationDateAndLocationAndType(String selectedDate, String selectedLocation, String selectedType) {
         
         // Supongamos que tienes métodos en el repository para filtrar por fecha, localización y tipo
         List<Article> filteredArticles = articleRepository.findByCreationDateAndLocationAndType(selectedDate, selectedLocation, selectedType);

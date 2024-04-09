@@ -29,7 +29,7 @@ public interface ArticleService {
 
     Page<Article> findPaginated(int pageNo, int pageSize);
 
-    public List<Article> filterArticles(String selectedDate, String selectedLocation, String selectedType);
+    public List<Article> findByCreationDateAndLocationAndType(String selectedDate, String selectedLocation, String selectedType);
 
 
 }

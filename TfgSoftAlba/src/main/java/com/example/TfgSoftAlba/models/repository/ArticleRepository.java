@@ -18,10 +18,16 @@ public interface ArticleRepository extends JpaRepository<Article,Long> {
 
     List<Article> findByCreationDateBetween(LocalDate startDate, LocalDate endDate);
 
-    @Query("SELECT a FROM Article a WHERE (:selectedDate IS NULL OR a.creationDate = :selectedDate) " +
-            "AND (:selectedLocation IS NULL OR a.location = :selectedLocation) " +
-            "AND (:selectedType IS NULL OR a.type = :selectedType)")
-    List<Article> filterArticles(String selectedDate, String selectedLocation, String selectedType);
+    @Query(value ="SELECT distinct a.* "+ 
+            "FROM db_tfgalba.article a "+
+            "LEFT JOIN db_tfgalba.article_tag t1 ON t1.article_id = a.id "+
+            "LEFT JOIN db_tfgalba.tags tg1 ON tg1.tag_id = t1.tag_id AND tg1.tags_type_id = '1' "+
+            "LEFT JOIN db_tfgalba.article_tag t2 ON t2.article_id = a.id "+
+            "LEFT JOIN db_tfgalba.tags tg2 ON tg2.tag_id = t2.tag_id AND tg2.tags_type_id = '2' "+
+            "WHERE (:selectedDate IS NULL OR DATE_FORMAT(a.dt_creationdate, '%m/%Y') = :selectedDate) "+
+            "AND (:selectedType IS NULL OR tg1.name = :selectedType) "+
+            "AND (:selectedLocation IS NULL OR tg2.name = :selectedLocation)", nativeQuery=true)
+    List<Article> findByCreationDateAndLocationAndType(String selectedDate, String selectedLocation, String selectedType);
 
 
 
