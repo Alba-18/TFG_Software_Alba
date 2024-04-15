@@ -25,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.Page;
@@ -53,16 +54,29 @@ public class WebController {
     @GetMapping ({"/","/index"})
     public String index(Model model){
         
-        return findPaginated(1,null,null,null, model);
+        findPaginated(1,null,null,null, model);
+
+        return "index";
     }
 
     @GetMapping ({"/filter"})
-    public String index(Model model,
-        @RequestParam(value = "selectedDate", required = false) String selectedDate,
-        @RequestParam(value = "selectedLocation", required = false) String selectedLocation,
-        @RequestParam(value = "selectedType", required = false) String selectedType){
-        
+    public String filter(Model model,
+                         @ModelAttribute(value = "selectedDate") String selectedDate,
+                         @ModelAttribute(value = "selectedLocation") String selectedLocation,
+                         @ModelAttribute(value = "selectedType") String selectedType) {
+
+        // Verificar y convertir valores de filtro nulos o vacíos a null
+        selectedDate = normalizeFilterValue(selectedDate);
+        selectedLocation = normalizeFilterValue(selectedLocation);
+        selectedType = normalizeFilterValue(selectedType);
+ 
         return findPaginated(1, selectedDate, selectedLocation, selectedType, model);
+        //return "index";
+    }
+
+    // Método para normalizar los valores de filtro
+    private String normalizeFilterValue(String value) {
+        return (value != null && value.isEmpty()) ? null : value;
     }
 
 
@@ -125,7 +139,7 @@ public class WebController {
 
         return "index";}*/
     
-    @GetMapping("/page/{pageNo}")
+    /*@GetMapping("/page/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 @RequestParam(value = "selectedDate", required = false) String selectedDate,
                                 @RequestParam(value = "selectedLocation", required = false) String selectedLocation,
@@ -140,7 +154,7 @@ public class WebController {
         List<Article> filteredArticles = articleService.findByCreationDateAndLocationAndType(selectedDate, selectedLocation, selectedType);
     
         // Crear la página paginada usando la lista filtrada
-        Page<Article> page = findPaginated(pageNo, 6, filteredArticles);
+        Page<Article> page = findPaginated2(pageNo, 6, filteredArticles);
     
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
@@ -172,9 +186,61 @@ public class WebController {
         }
 
         return "index";
+    }*/
+
+    @GetMapping("/page/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+                            @RequestParam(value = "selectedDate", required = false) String selectedDate,
+                            @RequestParam(value = "selectedLocation", required = false) String selectedLocation,
+                            @RequestParam(value = "selectedType", required = false) String selectedType,
+                            Model model) {
+
+         // Configurar el número de artículos por página
+        int pageSize = 5;
+
+        // Obtener la lista filtrada de artículos
+        List<Article> filteredArticles = articleService.findByCreationDateAndLocationAndType(selectedDate, selectedLocation, selectedType);
+
+        int totalPages = (int) Math.ceil((double) filteredArticles.size() / pageSize);
+
+       int start = (pageNo - 1) * pageSize;
+        int end = Math.min(start + pageSize, filteredArticles.size());
+        List<Article> pageArticles = filteredArticles.subList(start, end);
+
+        // Setear los atributos del modelo
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", totalPages);
+        //model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("Articles", pageArticles);
+        model.addAttribute("fechasCreacion", filteredArticles.stream()
+                                                    .map(Article::getCreationDate)
+                                                    .filter(Objects::nonNull)
+                                                    .map(date -> date.withDayOfMonth(1))
+                                                    .map(date -> date.format(DateTimeFormatter.ofPattern("MM/yyyy")))
+                                                    .distinct()
+                                                    .collect(Collectors.toList()));
+
+        model.addAttribute("FiltroLocalizacion", tagService.TypeLocalizacion());
+        model.addAttribute("FiltroTipos", tagService.TypeTipo());
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object principal =  auth.getPrincipal();
+        Long idUser = null;
+        if (principal instanceof CustomUserDetails)  idUser = ((CustomUserDetails)principal).getId();
+
+        if(idUser != null){ 
+            User usuario = userService.get(idUser);
+            Collection<Rol> roles = usuario.getRoles();
+            Rol rol =  roles.iterator().next();
+            model.addAttribute("rol", rol.getName());
+        }
+
+        return "index";
     }
 
-    public Page<Article> findPaginated(int pageNo, int pageSize, List<Article> filteredArticles) {
+
+
+    /*public Page<Article> findPaginated2(int pageNo, int pageSize, List<Article> filteredArticles) {
         // Asegúrate de que la lista filtrada no sea nula
         if (filteredArticles == null) {
             return new PageImpl<>(Collections.emptyList(), PageRequest.of(0, pageSize), 0);
@@ -187,7 +253,7 @@ public class WebController {
     
         Pageable pageable = PageRequest.of(pageNo-1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         return new PageImpl<>(content, pageable, totalElements);
-    }
+    }*/
 
 
     @GetMapping("/favorites")
