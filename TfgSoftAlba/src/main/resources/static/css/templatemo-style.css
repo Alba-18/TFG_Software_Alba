@@ -252,6 +252,13 @@ input{font-family: fantasy}
     opacity: 0.8;
 }
 
+.tm-noticia-item1 img {
+    display: block;
+    height: auto;
+    width: 100%;
+    opacity: 0.8;
+}
+
 .tm-noticia-item figcaption {
     padding: 2em;
     color: #fff;
