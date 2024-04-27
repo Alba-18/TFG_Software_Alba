@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.TfgSoftAlba.models.entity.Article;
-import com.example.TfgSoftAlba.models.repository.ArticleRepository;
 
 public interface ArticleService {
 
@@ -27,9 +26,7 @@ public interface ArticleService {
 
     public List<Article> findByCreationDate(String selectedMonthYear);
 
-    Page<Article> findPaginated(int pageNo, int pageSize);
-
     public List<Article> findByCreationDateAndLocationAndType(String selectedDate, String selectedLocation, String selectedType);
 
-
+    //Page<Article> findPaginated(int pageNo, int pageSize);
 }

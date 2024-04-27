@@ -5,12 +5,12 @@ import com.example.TfgSoftAlba.models.entity.Tag;
 import com.example.TfgSoftAlba.models.repository.ArticleRepository;
 import com.example.TfgSoftAlba.models.repository.TagRepository;
 import com.example.TfgSoftAlba.models.service.ArticleService;
-import com.example.TfgSoftAlba.util.CustomUserDetails;
+//import com.example.TfgSoftAlba.util.CustomUserDetails;
 import com.example.TfgSoftAlba.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.data.domain.*;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +28,6 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private TagRepository tagRepository;
 
-
     @Override
     public List<Article> listAllArticles() {
         return articleRepository.findAll();
@@ -42,7 +41,6 @@ public class ArticleServiceImpl implements ArticleService {
     public Article get(Long id) {
         return articleRepository.findById(id).get();
     }
-
 
     @Override
 	public int save(Article article, MultipartFile multipartFile, List<Long>selectedTagIds) throws IOException {
@@ -70,7 +68,6 @@ public class ArticleServiceImpl implements ArticleService {
         return res;
     }
 	
-
     private void updateArticleTags(Long articleid, List<Long> selectedTagIds) {
         Article article = articleRepository.findById(articleid).orElse(null);
         if (article != null){
@@ -83,15 +80,30 @@ public class ArticleServiceImpl implements ArticleService {
     public Optional<Article> edit(Long id) {
         return articleRepository.findById(id);
     }
-
     
     @Override
 	public void delete(Long id) {
 		articleRepository.deleteById(id);		
 	}
 
+    public List<Article> findByCreationDate(String selectedMonthYear) {
+        // Convertir la cadena selectedMonthYear a LocalDate
+        LocalDate startDate = LocalDate.parse(selectedMonthYear + "-01", DateTimeFormatter.ofPattern("MM/yyyy-dd"));
+        LocalDate endDate = startDate.plusMonths(1).minusDays(1); // Obtener el último día del mes
 
-    @Override
+        // Consultar los artículos en el rango de fechas correspondiente al mes y año proporcionados
+        return articleRepository.findByCreationDateBetween(startDate, endDate);
+    }
+
+    // Método para filtrar artículos
+    public List<Article> findByCreationDateAndLocationAndType(String selectedDate, String selectedLocation, String selectedType) {
+        
+        List<Article> filteredArticles = articleRepository.findByCreationDateAndLocationAndType(selectedDate, selectedLocation, selectedType);
+
+        return filteredArticles;
+    }
+
+        /*@Override
     public Page<Article> findPaginated(int pageNo, int pageSize) {
 
         //verifica si hay usuario con sesion iniciada
@@ -111,24 +123,5 @@ public class ArticleServiceImpl implements ArticleService {
         Page<Article> page = new PageImpl<>(content, pageable, totalElements);
         
         return page;
-    }
-
-    public List<Article> findByCreationDate(String selectedMonthYear) {
-        // Convertir la cadena selectedMonthYear a LocalDate
-        LocalDate startDate = LocalDate.parse(selectedMonthYear + "-01", DateTimeFormatter.ofPattern("MM/yyyy-dd"));
-        LocalDate endDate = startDate.plusMonths(1).minusDays(1); // Obtener el último día del mes
-
-        // Consultar los artículos en el rango de fechas correspondiente al mes y año proporcionados
-        return articleRepository.findByCreationDateBetween(startDate, endDate);
-    }
-
-    // Método para filtrar artículos
-    public List<Article> findByCreationDateAndLocationAndType(String selectedDate, String selectedLocation, String selectedType) {
-        
-        // Supongamos que tienes métodos en el repository para filtrar por fecha, localización y tipo
-        List<Article> filteredArticles = articleRepository.findByCreationDateAndLocationAndType(selectedDate, selectedLocation, selectedType);
-
-        return filteredArticles;
-    }
-
+    }*/
 }

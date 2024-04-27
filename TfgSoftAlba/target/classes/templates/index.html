@@ -10,35 +10,38 @@
                 <div class="col-FILTER">
                     <div class="btn-group" role="group" aria-label="Categorías">
                         <!-- Botón para la categoría 1 con menú desplegable-->
-                        <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group" role="group">
-                            <label for="categoria">TIPOLOGIA</label>
+                        <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group-c" role="group">
+                            <label for="categoria" style="margin-right: 10px;">TIPOLOGIA</label>
                             <select id="categoria" name="categoria">
-                                <option value="">Todas</option>
-                                <option th:each="categoria : ${FiltroTipos}" th:value="${categoria}" th:text="${categoria}"></option>
+                                <optgroup label="Seleccionar localización">
+                                    <option value="">Todas</option>
+                                    <option th:each="categoria : ${FiltroTipos}" th:value="${categoria}" th:text="${categoria}"></option>
+                                </optgroup>
                             </select>
                         </div>
                         <!-- Botón para la categoría 2 con menú desplegable-->
-                        <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group" role="group">
-                            <label for="localizacion">LOCALIZACION</label>
+                        <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group-c" role="group">
+                            <label for="localizacion" style="margin-right: 10px;">LOCALIZACION</label>
                             <select id="localizacion" name="localizacion">
-                                <option value="">Todas</option>
-                                <option th:each="localizacion : ${FiltroLocalizacion}" th:value="${localizacion}" th:text="${localizacion}"></option>
+                                <optgroup label="Seleccionar localización">
+                                    <option value="">Todas</option>
+                                    <option th:each="localizacion : ${FiltroLocalizacion}" th:value="${localizacion}" th:text="${localizacion}"></option>
+                                </optgroup>
                             </select>
                         </div>
                         <!-- Botón para la categoría 3 con menú desplegable-->
-                        <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group" role="group">
-                            <label for="fecha">FECHA</label>
-                            <div class="input-group date">
-                                <select id="fecha" name="fecha" class="form-control">
-                                    <option value="">Seleccionar fecha</option>
-                                    <!-- Iterar sobre las fechas de creación y construir las opciones del selector -->
-                                    <option th:each="fecha : ${fechasCreacion}" th:text="${fecha}"></option>
-                                </select>
-                            </div> 
+                        <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group-c" role="group">
+                            <label for="fecha" style="margin-right: 10px;">FECHA</label>
+                                <select id="fecha" name="fecha">
+                                    <optgroup label="Seleccionar fecha">
+                                        <option value="">Todas</option>
+                                        <!-- Iterar sobre las fechas de creación y construir las opciones del selector -->
+                                        <option th:each="fecha : ${fechasCreacion}" th:text="${fecha}"></option>
+                                    </optgroup>
+                                </select> 
                         </div>
-                        <!-- Agrega más botones de categorías según sea necesario -->
                         <!-- Agregar un botón para enviar la solicitud de filtrado -->
-                        <button  th:if="${rol == 'ADMIN' or rol == 'USER'}" id="filtrar-btn" class="btn btn-primary">Filtrar</button>
+                        <button  th:if="${rol == 'ADMIN' or rol == 'USER'}" id="filtrar-btn" class="btn btn-primary-1">Filtrar</button>
                     </div>
                 </div>
             </div>
@@ -83,6 +86,9 @@
             </nav>
 
         </div>
+
+        <!-- Divisor fijo -->
+        <div class="spacer"></div>
         
         <footer th:replace="plantilla/template :: footer"></footer>
 
@@ -107,28 +113,18 @@
                         },
                         success: function(response) {
                             $('.container.pt-5').html(response);
-
-                            // Eliminar las opciones seleccionadas antes de agregarlas nuevamente
-                            $('#categoria option:selected').prop('selected', false);
-                            $('#localizacion option:selected').prop('selected', false);
-                            $('#fecha option:selected').prop('selected', false);
-
-                            // Agregar las opciones seleccionadas nuevamente si están presentes
-                            if (selectedType) {
-                                $('#categoria').val(selectedType);
-                            }
-                            if (selectedLocation) {
-                                $('#localizacion').val(selectedLocation);
-                            }
-                            if (selectedDate) {
-                                $('#fecha').val(selectedDate);
-                            }
                         },
                         error: function(xhr, status, error) {
                             // Manejar errores si es necesario
                         },
                     });
                 });
+                // Limpiar los filtros al recargar la página
+                window.onload = function() {
+                $('#categoria option:selected').prop('selected', false);
+                $('#localizacion option:selected').prop('selected', false);
+                $('#fecha option:selected').prop('selected', false);
+                };
             });
         </script>
 

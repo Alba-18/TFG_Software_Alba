@@ -4,7 +4,6 @@ import com.example.TfgSoftAlba.models.entity.Article;
 import com.example.TfgSoftAlba.models.entity.Rol;
 import com.example.TfgSoftAlba.models.entity.User;
 import com.example.TfgSoftAlba.models.repository.ArticleRepository;
-import com.example.TfgSoftAlba.models.repository.TagRepository;
 import com.example.TfgSoftAlba.models.service.ArticleService;
 import com.example.TfgSoftAlba.models.service.TagService;
 import com.example.TfgSoftAlba.models.service.UserArticleLikeService;
@@ -14,7 +13,6 @@ import com.example.TfgSoftAlba.util.CustomUserDetails;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -28,11 +26,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+//import org.springframework.data.domain.Page;
+//import org.springframework.data.domain.PageImpl;
+//import org.springframework.data.domain.PageRequest;
+//import org.springframework.data.domain.Pageable;
+//import org.springframework.data.domain.Sort;
 
 @Controller
 public class WebController {
@@ -46,7 +44,7 @@ public class WebController {
     @Autowired
     private UserService userService;
 
-    private ArticleRepository articleRepository;
+    //private ArticleRepository articleRepository;
 
     @Autowired
     private UserArticleLikeService userArticleLikeService;
@@ -58,6 +56,7 @@ public class WebController {
 
         return "index";
     }
+
 
     @GetMapping ({"/filter"})
     public String filter(Model model,
@@ -196,21 +195,20 @@ public class WebController {
                             Model model) {
 
          // Configurar el número de artículos por página
-        int pageSize = 5;
+        int pageSize = 6;
 
         // Obtener la lista filtrada de artículos
         List<Article> filteredArticles = articleService.findByCreationDateAndLocationAndType(selectedDate, selectedLocation, selectedType);
 
         int totalPages = (int) Math.ceil((double) filteredArticles.size() / pageSize);
 
-       int start = (pageNo - 1) * pageSize;
+        int start = (pageNo - 1) * pageSize;
         int end = Math.min(start + pageSize, filteredArticles.size());
         List<Article> pageArticles = filteredArticles.subList(start, end);
 
         // Setear los atributos del modelo
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", totalPages);
-        //model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("Articles", pageArticles);
         model.addAttribute("fechasCreacion", filteredArticles.stream()
                                                     .map(Article::getCreationDate)

@@ -28,7 +28,4 @@ public interface ArticleRepository extends JpaRepository<Article,Long> {
             "AND (:selectedType IS NULL OR tg1.name = :selectedType) "+
             "AND (:selectedLocation IS NULL OR tg2.name = :selectedLocation)", nativeQuery=true)
     List<Article> findByCreationDateAndLocationAndType(String selectedDate, String selectedLocation, String selectedType);
-
-
-
 }
