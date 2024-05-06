@@ -60,9 +60,9 @@ public class WebController {
 
     @GetMapping ({"/filter"})
     public String filter(Model model,
-                         @ModelAttribute(value = "selectedDate") String selectedDate,
-                         @ModelAttribute(value = "selectedLocation") String selectedLocation,
-                         @ModelAttribute(value = "selectedType") String selectedType) {
+                         @ModelAttribute(value = "fecha") String selectedDate,
+                         @ModelAttribute(value = "localizacion") String selectedLocation,
+                         @ModelAttribute(value = "categoria") String selectedType) {
 
         // Verificar y convertir valores de filtro nulos o vacíos a null
         selectedDate = normalizeFilterValue(selectedDate);
@@ -189,38 +189,43 @@ public class WebController {
 
     @GetMapping("/page/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
-                            @RequestParam(value = "selectedDate", required = false) String selectedDate,
-                            @RequestParam(value = "selectedLocation", required = false) String selectedLocation,
-                            @RequestParam(value = "selectedType", required = false) String selectedType,
-                            Model model) {
+                                @RequestParam(value = "fecha") String selectedDate,
+                                @RequestParam(value = "localizacion") String selectedLocation,
+                                @RequestParam(value = "categoria") String selectedType,
+                                Model model) {
 
-         // Configurar el número de artículos por página
+    
+        // Configurar el número de artículos por página
         int pageSize = 6;
-
+    
         // Obtener la lista filtrada de artículos
         List<Article> filteredArticles = articleService.findByCreationDateAndLocationAndType(selectedDate, selectedLocation, selectedType);
-
-        int totalPages = (int) Math.ceil((double) filteredArticles.size() / pageSize);
-
-        int start = (pageNo - 1) * pageSize;
-        int end = Math.min(start + pageSize, filteredArticles.size());
-        List<Article> pageArticles = filteredArticles.subList(start, end);
-
+    
+        // Obtener información de fechas de creación
+        List<String> fechasCreacion = filteredArticles.stream()
+                .map(Article::getCreationDate)
+                .filter(Objects::nonNull)
+                .map(date -> date.withDayOfMonth(1))
+                .map(date -> date.format(DateTimeFormatter.ofPattern("MM/yyyy")))
+                .distinct()
+                .collect(Collectors.toList());
+    
+        // Obtener tipos de localización y tipos de artículo
+        List<String> filtroLocalizacion = tagService.TypeLocalizacion();
+        List<String> filtroTipos = tagService.TypeTipo();
+    
+        System.out.println("Filtrando por Fecha: " + selectedDate);
+        System.out.println("Filtrando por Localización: " + selectedLocation);
+        System.out.println("Filtrando por Tipo: " + selectedType);
+        System.out.println("Número de artículos después del filtrado: " + filteredArticles.size());
         // Setear los atributos del modelo
-        model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("Articles", pageArticles);
-        model.addAttribute("fechasCreacion", filteredArticles.stream()
-                                                    .map(Article::getCreationDate)
-                                                    .filter(Objects::nonNull)
-                                                    .map(date -> date.withDayOfMonth(1))
-                                                    .map(date -> date.format(DateTimeFormatter.ofPattern("MM/yyyy")))
-                                                    .distinct()
-                                                    .collect(Collectors.toList()));
-
-        model.addAttribute("FiltroLocalizacion", tagService.TypeLocalizacion());
-        model.addAttribute("FiltroTipos", tagService.TypeTipo());
-
+        model.addAttribute("currentPage", pageNo); // Esto puede no ser necesario sin paginación
+        // No hay necesidad de calcular totalPages sin paginación
+        model.addAttribute("Articles", filteredArticles); // Agregar la lista de artículos al modelo
+        model.addAttribute("fechasCreacion", fechasCreacion); // Agregar fechas de creación al modelo
+        model.addAttribute("FiltroLocalizacion", filtroLocalizacion); // Agregar tipos de localización al modelo
+        model.addAttribute("FiltroTipos", filtroTipos); // Agregar tipos de artículo al modelo
+    
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object principal =  auth.getPrincipal();
         Long idUser = null;
@@ -232,7 +237,8 @@ public class WebController {
             Rol rol =  roles.iterator().next();
             model.addAttribute("rol", rol.getName());
         }
-
+        // Aquí puedes agregar lógica adicional según sea necesario
+    
         return "index";
     }
 
