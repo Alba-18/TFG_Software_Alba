@@ -5,46 +5,49 @@
     <body>
         <header th:replace="plantilla/template :: header"></header> 
 
+        
         <div class="container-fluid mt-3 categories-bar">
-            <div class="row">
-                <div class="col-FILTER">
-                    <div class="btn-group" role="group" aria-label="Categorías">
-                        <!-- Botón para la categoría 1 con menú desplegable-->
-                        <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group-c" role="group">
-                            <label for="categoria" style="margin-right: 10px;">TIPOLOGIA</label>
-                            <select id="categoria" name="categoria">
-                                <optgroup label="Seleccionar localización">
-                                    <option value="">Todas</option>
-                                    <option th:each="categoria : ${FiltroTipos}" th:value="${categoria}" th:text="${categoria}"></option>
-                                </optgroup>
-                            </select>
-                        </div>
-                        <!-- Botón para la categoría 2 con menú desplegable-->
-                        <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group-c" role="group">
-                            <label for="localizacion" style="margin-right: 10px;">LOCALIZACION</label>
-                            <select id="localizacion" name="localizacion">
-                                <optgroup label="Seleccionar localización">
-                                    <option value="">Todas</option>
-                                    <option th:each="localizacion : ${FiltroLocalizacion}" th:value="${localizacion}" th:text="${localizacion}"></option>
-                                </optgroup>
-                            </select>
-                        </div>
-                        <!-- Botón para la categoría 3 con menú desplegable-->
-                        <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group-c" role="group">
-                            <label for="fecha" style="margin-right: 10px;">FECHA</label>
-                                <select id="fecha" name="fecha">
-                                    <optgroup label="Seleccionar fecha">
-                                        <option value="">Todas</option>
-                                        <!-- Iterar sobre las fechas de creación y construir las opciones del selector -->
-                                        <option th:each="fecha : ${fechasCreacion}" th:text="${fecha}"></option>
-                                    </optgroup>
-                                </select> 
-                        </div>
-                        <!-- Agregar un botón para enviar la solicitud de filtrado -->
-                        <button  th:if="${rol == 'ADMIN' or rol == 'USER'}" id="filtrar-btn" class="btn btn-primary-1">Filtrar</button>
+                <div class="row">
+                    <div class="col-FILTER">
+                        <form th:action="@{/filter}" method="get">
+                            <div class="btn-group" role="group" aria-label="Categorías">
+                                <!-- Botón para la categoría 1 con menú desplegable-->
+                                <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group-c" role="group">
+                                    <label for="categoria" style="margin-right: 10px;">TIPOLOGIA</label>
+                                    <select id="categoria" name="categoria">
+                                        <optgroup label="Seleccionar localización">
+                                            <option value="">Todas</option>
+                                            <option th:each="categoria : ${FiltroTipos}" th:value="${categoria}" th:text="${categoria}"></option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <!-- Botón para la categoría 2 con menú desplegable-->
+                                <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group-c" role="group">
+                                    <label for="localizacion" style="margin-right: 10px;">LOCALIZACION</label>
+                                    <select id="localizacion" name="localizacion">
+                                        <optgroup label="Seleccionar localización">
+                                            <option value="">Todas</option>
+                                            <option th:each="localizacion : ${FiltroLocalizacion}" th:value="${localizacion}" th:text="${localizacion}"></option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <!-- Botón para la categoría 3 con menú desplegable-->
+                                <div th:if="${rol == 'ADMIN' or rol == 'USER'}" class="btn-group-c" role="group">
+                                    <label for="fecha" style="margin-right: 10px;">FECHA</label>
+                                        <select id="fecha" name="fecha">
+                                            <optgroup label="Seleccionar fecha">
+                                                <option value="">Todas</option>
+                                                <!-- Iterar sobre las fechas de creación y construir las opciones del selector -->
+                                                <option th:each="fecha : ${fechasCreacion}" th:text="${fecha}"></option>
+                                            </optgroup>
+                                        </select> 
+                                </div>
+                                <!-- Agregar un botón para enviar la solicitud de filtrado -->
+                                <button  th:if="${rol == 'ADMIN' or rol == 'USER'}" id="filtrar-btn" type="submit">Filtrar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
         </div>
         
         <div class="container pt-5" >
@@ -87,6 +90,8 @@
 
         </div>
 
+
+
         <!-- Divisor fijo -->
         <div class="spacer"></div>
         
@@ -94,7 +99,7 @@
 
         <!-- Agregar los scripts necesarios para el DatePicker -->
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script th:inline="javascript">
+        <!--<script th:inline="javascript">
             $(document).ready(function() {
                 // Agregar una función para manejar el clic en el botón de filtrar
                 $('#filtrar-btn').click(function() {
@@ -112,21 +117,35 @@
                             selectedDate: selectedDate
                         },
                         success: function(response) {
-                            $('.container.pt-5').html(response);
+                           //$('.row.d-flex.pt-4.px-5').html(response);
+                            //$('#articleResults').html(response);
+                            $('.row.d-flex.pt-4.px-5').empty();
+                            response.Articles.forEach(function(article) {
+                                //console.log(article);
+                                var articleHtml = '<div class="col-lg-4 col-md-6 col-sm-6 col-12 mb-2">';
+                                articleHtml += '<div class="tm-noticia-item" style="border-top: 4px solid #4472C4!important">';
+                                articleHtml += '<a th:href="/article/' + article.id + '"><img th:src="/images/' + article.image + '.jpg" class="img-fuid"></a>';
+                                articleHtml += '<div class="text d-block">';
+                                articleHtml += '<a th:href="/article/' + article.id + '" style="text-decoration: none; color: #343434;"><h5 th:text=' + article.sTitle + '></h5></a>';
+                                articleHtml += '</div></div></div>';
+                                $('.row.d-flex.pt-4.px-5').append(articleHtml);
+                            //    console.log(articleHtml)
+                            });
+
+                            // Actualizar la información de paginación
+                            //$('.pagination').empty();
+                            //for (var i = 1; i <= response.totalPages; i++) {
+                            //    var pageLink = '<li class="page-item"><a class="page-link" href="/page/' + i + '">' + i + '</a></li>';
+                            //    $('.pagination').append(pageLink);
+                            //}
                         },
                         error: function(xhr, status, error) {
                             // Manejar errores si es necesario
                         },
                     });
                 });
-                // Limpiar los filtros al recargar la página
-                window.onload = function() {
-                $('#categoria option:selected').prop('selected', false);
-                $('#localizacion option:selected').prop('selected', false);
-                $('#fecha option:selected').prop('selected', false);
-                };
             });
-        </script>
+        </script>-->
 
     </body>
 </html>
