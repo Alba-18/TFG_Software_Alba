@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: db_tfgalba
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db_tfgalba20230424.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - tfg_alba
+    hostname: database
+
+  java_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    networks:
+      - tfg_alba
+
+volumes:
+  mysql_data:
+
+networks:
+  tfg_alba:
+    driver: bridge

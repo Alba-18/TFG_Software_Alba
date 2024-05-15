@@ -40,7 +40,15 @@ CREATE TABLE `article` (
 
 LOCK TABLES `article` WRITE;
 /*!40000 ALTER TABLE `article` DISABLE KEYS */;
-INSERT INTO `article` VALUES (1,'1','El Real Madrid CF de EspaÃ±a avanza hacia las semifinales de la UEFA Champions League 22/23, al derrotar al Chelsea de Inglaterra 2 a 0 en el partido de vuelta de los cuartos de final de la competiciÃ³n europea.\r\nAhora se enfrentarÃ¡ al Manchester City de la Premier League en semifinales.','Real Madrid CF avanza a semifinales de la UEFA Champions League 22/23','2023-11-13');
+INSERT INTO `article` VALUES (17,'8','El próximo 12 de abril a las 10:00 h tendrá lugar el webinar formativo sobre la situación hipotecaria actual organizado por nuestra oficina de Bankinter dónde se analizarán los procesos de subrogación de hipotecas y, te aconsejarán sobre cómo tomar una de las decisiones financieras más importantes ¡No te lo pierdas!','Webinar Bankinter','2024-03-28');
+INSERT INTO `article` VALUES (16,'7','Si quieres ampliar tus capacidades técnicas y tecnológicas, os recordamos que puedes aprovechar nuestras licencias de cursos externos.','¡Apúntate a los cursos de Open Webinars!','2024-02-02');
+INSERT INTO `article` VALUES (14,'1','El próximo jueves, 25 de abril, celebramos un nuevo LAST a partir de las 20:30h en Vyta.','¡Apúntate al LAST!','2024-04-15');
+INSERT INTO `article` VALUES (10,'6','Nos complace anunciar nuestra participación en el proyecto Discovery Front to Back de notas estructuradas y warrants para BBVA México. Desde la Oficina de México, seguimos trabajando seguimos liderando la práctica de Caplyso y Murex.','Nuevo proyecto: Discovery F2B Notas estructuradas y Warrants','2024-01-10');
+INSERT INTO `article` VALUES (15,'5','Nuestros compañeros del área de datos participaron en la 4ª edición de Data Driven Day organizado por iKN Spain en el WiZink Center.','Data Driven Day 2024','2024-04-15');
+INSERT INTO `article` VALUES (6,'4','Durante la mañana de ayer, alumnos de Bachillerato del colegio Runnymede han visitado nuestras oficinas de Madrid, dónde hemos tenido la oportunidad de acercar la realidad y las tendencias de la consultoría a los futuros talentos.','Visita Corporativa','2024-01-13');
+INSERT INTO `article` VALUES (5,'3','El próximo 25 de mayo tendrá lugar el torneo de pádel entre empleados. En esta ocasión, tenemos muchas novedades (Torneo de Beerpong, BBQ y mucho más). ¡Os esperamos!','¡Apúntate al Torneo de Pádel + BBQ!','2024-04-13');
+INSERT INTO `article` VALUES (9,'2','Estamos orgullosos de anunciar un nuevo proyecto relevante en Intercam: Apoyo Validación Murex. Este proyecto amplía nuestra presencia dentro de la entidad, específicamente se trata de un proyecto donde ayudaremos al departamento de riesgos financieros a validar los inputs de mercado, cálculos de valoración, VaR, CVA y DVA.','Nuevo proyecto: Apoyo Validación Murex - Intercam','2024-02-10');
+
 /*!40000 ALTER TABLE `article` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,7 +100,7 @@ CREATE TABLE `user_article_like` (
 
 LOCK TABLES `user_article_like` WRITE;
 /*!40000 ALTER TABLE `user_article_like` DISABLE KEYS */;
-INSERT INTO `user_article_like` VALUES (1,_binary '',1,1),(2,_binary '',2,1),(3,_binary '',1,2);
+-- INSERT INTO `user_article_like` VALUES (1,_binary,1,1),(2,_binary,2,1),(3,_binary,1,2);
 /*!40000 ALTER TABLE `user_article_like` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,7 +126,7 @@ CREATE TABLE `user_rol` (
 
 LOCK TABLES `user_rol` WRITE;
 /*!40000 ALTER TABLE `user_rol` DISABLE KEYS */;
-INSERT INTO `user_rol` VALUES (1,1),(2,2);
+INSERT INTO `user_rol` VALUES (1,1);
 /*!40000 ALTER TABLE `user_rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,35 +153,9 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin@tfg.com','admin','$2a$10$Vu4TMkaI1V0nQ1I0K42tzeMujmYdaMu63YYpVHndpCOutmW3AXmTW'),(2,'jmedina@tfg.com','Jesus Medina','$2a$10$Dk0QijyDIw8/vStjP42HVegg8ybNhnwcBis9slFe9IiYPb9Q7eFH2');
+INSERT INTO `users` VALUES (1,'admin@tfg.com','admin','$2a$12$7.hBuseMi0bg8kQzeHtbNeL16JLMwkLb8eUa3ofcuUT7jAWj3RqI2');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
---
--- Table structure for table `TagType`
---
-
-/*DROP TABLE IF EXISTS `tags_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 ;
-CREATE TABLE `tags_type` (
-  `tags_type_id` bigint NOT NULL AUTO_INCREMENT,
-  `description` varchar(500) NOT NULL,
-  PRIMARY KEY (`tags_type_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Dumping data for table `tags_type`
---
-
-/*LOCK TABLES `tags_type` WRITE;
-/*!40000 ALTER TABLE `tags_type` DISABLE KEYS ;
-INSERT INTO `tags_type` VALUES (1,'Tipo'),(2,'Sede');
-/*!40000 ALTER TABLE `tags_type` ENABLE KEYS ;
-UNLOCK TABLES;*/
 
 
 --
@@ -200,13 +182,15 @@ CREATE TABLE `tags` (
 LOCK TABLES `tags` WRITE;
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
 INSERT INTO `tags` VALUES 
-(1,'Deportes',NULL),
+(1,'Tipologia',NULL),
 (2,'Localizacion',NULL),
-(3,'Futbol',1),
-(4,'Baloncesto',1),
+(3,'Vida',1),
+(4,'Coorporativo',1),
 (5,'Madrid',2),
 (6,'Sevilla',2),
-(7,'Valencia',2);
+(7,'Valencia',2),
+(8,'Global',2),
+(9,'Informacion Empleado',1);
 /*!40000 ALTER TABLE `tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -233,7 +217,7 @@ CREATE TABLE `article_tag` (
 
 LOCK TABLES `article_tag` WRITE;
 /*!40000 ALTER TABLE `article_tag` DISABLE KEYS */;
-INSERT INTO `article_tag` VALUES (1,1),(2,2);
+INSERT INTO `article_tag` VALUES (5,5),(5,3),(6,5),(6,4),(9,4),(10,4),(14,3),(14,5),(15,4),(16,9),(16,8),(17,9),(17,8);
 /*!40000 ALTER TABLE `article_tag` ENABLE KEYS */;
 UNLOCK TABLES;
 
