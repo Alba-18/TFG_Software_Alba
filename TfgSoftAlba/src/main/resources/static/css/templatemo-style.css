@@ -41,6 +41,9 @@ a:hover {
 h3{ color:black;
     font-family: fantasy}
 
+h4{ color:black;
+    font-family: fantasy}
+
 input{font-family: fantasy}
 
 /* Estilo para el divisor fijo (spacer) */
@@ -126,6 +129,12 @@ input{font-family: fantasy}
 
 .btn-group > .btn {
     flex-grow: 1;
+}
+
+.card-body{
+    margin-top: 0px;
+    align-content: center;
+    width: 100%;
 }
 
 /*------------------------------------------*/
