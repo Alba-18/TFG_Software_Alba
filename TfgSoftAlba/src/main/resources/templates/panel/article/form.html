@@ -13,24 +13,30 @@
                         <div class="alert alert-danger">ERROR</div>
                     </div>
     
-                    <h2 class="text-center mb-4">NUEVA NOTICIA</h2>
+                    <h2 class="text-center mb-4">NOTICIA</h2>
                     <div th:if="${error}" class="alert alert-danger">
                         <p th:text="${{error}}"></p>
                     </div>
-                    <button type="button" data-toggle="modal" data-target="#modal_ayuda">Ayuda</button>
+                    <button type="button" data-toggle="modal" data-target="#modal_ayuda">AYUDA</button>
 
                     <div class="containerr">
                         <div class="modal fade" id="modal_ayuda" role="dialog">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog"style="background-color: #9DC3E6;border: 4px solid #2F528F;">
                             <div class="moddal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Modal Header</h4>
+                                <div class="modal-header" style="border: #9DC3E6">
+                                    <h4 class="modal-title">AYUDA</h4>
                                 </div>
-                                <div class="modal-body">
-                                    <p>Texto modal</p>
+                                <div class="modal-body" style="border: #9DC3E6">
+                                    <p>Para crear o editar una noticia debemos:</p>
+                                    <ul>
+                                        <li>Rellenar el campo título</li>
+                                        <li>Rellenar el campo contenido</li>
+                                        <li>Seleccionar una imagen disponible en nuestro ordenador</li>
+                                        <li>Asignar los tags necesarios (para seleccionar más de un tag hay que mantener pulsada la tecla <strong>ctrl</strong>)</li>
+                                    </ul>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <div class="modal-footer" style="border: #9DC3E6">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                                 </div>
                             </div>
                         </div>
