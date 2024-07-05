@@ -32,7 +32,7 @@
                                         <li>Rellenar el campo título</li>
                                         <li>Rellenar el campo contenido</li>
                                         <li>Seleccionar una imagen disponible en nuestro ordenador</li>
-                                        <li>Asignar los tags necesarios (para seleccionar más de un tag hay que mantener pulsada la tecla <strong>ctrl</strong>)</li>
+                                        <li>Asignar las categorias necesarias (para seleccionar más de una hay que mantener pulsada la tecla <strong>ctrl</strong>)</li>
                                     </ul>
                                 </div>
                                 <div class="modal-footer" style="border: #9DC3E6">
@@ -62,7 +62,7 @@
                         </div>
 
                         <div class="form-group mb-3">
-                            <label class="control-label" for="tags">TAGS: </label>
+                            <label class="control-label" for="tags">CATEGORIAS: </label>
                             <select multiple class="form-control" id="tags" name="selectedTags">
                                 <option th:each="tag : ${tags}" th:value="${tag.id}" th:text="${tag.name}"></option>
                             </select>

@@ -60,7 +60,7 @@ public class ArticleServiceImpl implements ArticleService {
                 FileUploadUtil.saveImage(fileName, multipartFile);
                 newArticle.setImage(fileName);
             } 
-            // Actualiza el artículo para reflejar las asociaciones de subcategorías
+            // Actualiza el artículo
             newArticle = articleRepository.save(newArticle);
         }
         articleRepository.save(newArticle);
